@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"fmt"
+	"github.com/OhYee/goutils"
 	// "github.com/OhYee/goutils/bytes"
 	"strings"
 )
@@ -12,14 +13,13 @@ type HashCode []byte
 // NewHashCodeFromBytes return a HashCode
 func NewHashCodeFromBytes(b []byte) HashCode {
 	return b
-
 }
 
 // NewHashCodeFromBytes return a HashCode
 func NewHashCodeFromString(s string) HashCode {
 	b := make([]byte, len(s)/2)
-	for i := 0; i < len(s); i += 2 {
-		b[i*2] = hex2ord(s[i*2])*16 + hex2ord(s[i*2+1])
+	for i := 0; i < len(b); i++ {
+		b[i] = hex2ord(s[i*2])*16 + hex2ord(s[i*2+1])
 	}
 	return b
 }
@@ -49,4 +49,8 @@ func (h HashCode) String() string {
 	}
 	return strings.Join(ss, "")
 	// return string(h)
+}
+
+func (h HashCode) Equal(h2 HashCode) bool {
+	return goutils.Equal(h, h2)
 }
