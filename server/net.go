@@ -8,6 +8,7 @@ import (
 	"github.com/xtaci/kcp-go"
 	"math/rand"
 	"net"
+	"time"
 )
 
 var Port int
@@ -42,9 +43,11 @@ func startServer() net.Listener {
 
 func server(conn net.Conn) {
 	defer conn.Close()
+	conn.SetDeadline(time.Now().Add(time.Second * 10))
 	b, err := gb.ReadNBytes(conn, 1)
-	if err != nil {
+	if err != nil && len(b) > 0 {
 		serverLogger.Println(err)
+		return
 	}
 	switch b[0] {
 	case 'r':
